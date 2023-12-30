@@ -1,0 +1,29 @@
+@echo off
+
+REM copy this batch file and place in known location. and set path to that location in system variables.
+REM open cmd and try tying cct
+REM paste here add folder path to max3255x-firmware file
+REM ex: C:\POYNT\max3255x-firmware
+set mainFolderPath=<folder path without any space between =>
+
+echo :: deleting \cli-installer\target
+rmdir /s /q %mainFolderPath%\tools\pt\cli-installer\target
+if %errorlevel% NEQ 0 (
+    echo An error occurred while deleting \cli-installer\target.
+	pause
+)
+echo.
+echo :: deleting \tests\target
+rmdir /s /q %mainFolderPath%\tools\pt\tests\target
+if %errorlevel% NEQ 0 (
+    echo An error occurred while deleting \tests\target.
+	pause
+)
+
+echo.
+@echo on
+cd /d %mainFolderPath%\tools\pt\
+echo :: Running mvn build on %mainFolderPath%\tools\pt\
+mvn clean install -DskipTests
+exit
+start cmd cd /d "%mainFolderPath%\tools\pt\tests & Run your test cases here"
